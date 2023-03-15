@@ -1,7 +1,7 @@
 import math
 import sys
 
-k = 30
+k = 20
 trainSet = "train"
 testSet = "test"
 
@@ -36,9 +36,10 @@ class Iris:
         self.d = float(parts[3])
         if len(parts) == 5:
             self.type = parts[4].split("-")[1]
+            self.type = self.type.replace("\n", "")
         else:
             self.type = "TBD"
-        self.distance = float("inf")
+        self.lastDistance = float("inf")
 
     def __str__(self):
         return f"[A:{self.a}, B:{self.b}, C:{self.c}, D:{self.d}]\ttype: {self.type}"
@@ -59,29 +60,35 @@ irisList = list()
 for line in trainFile:
     irisList.append(Iris(line))
 
-# obszar testowy
-tmp = Iris(testFile.readline())
-print(f"Before:\n{tmp}")
+# dodawanie wszystkich irysów do sprawdzenia jako obiegkty
+toTestIrisList = list()
+for line in testFile:
+    toTestIrisList.append(Iris(line))
 
-# liczenie odległości do innych irysow(train) dla tego irysa(test)
-for trainIris in irisList:
-    trainIris.reset()
-    trainIris.distance = findVectorDistance(trainIris, tmp)
+print("After assigning: ")
+for tmp in toTestIrisList:
+    # liczenie odległości do innych irysow(train) dla tego irysa(test)
+    for trainIris in irisList:
+        # trainIris.reset()
+        trainIris.lastDistance = findVectorDistance(trainIris, tmp)
 
-sortedIrisList = sorted(irisList, key=lambda x: x.distance, reverse=False)[:k]
-# zliczanie typów (setosa, versicolor, virginica)
-types = (0, 0, 0)
-for iris in sortedIrisList:
-    match iris.type:
-        case "setosa":
-            types[0] += 1
-        case "versicolor":
-            types[1] += 1
-        case "virginica":
-            types[2] += 1
+    sortedIrisList = sorted(irisList, key=lambda x: x.lastDistance, reverse=False)[:k]
+    # zliczanie typów (setosa, versicolor, virginica)
+    types = (0, 0, 0)
+    types = list(types)
+    for iris in sortedIrisList:
+        match iris.type:
+            case "setosa":
+                types[0] += 1
+            case "versicolor":
+                types[1] += 1
+            case "virginica":
+                types[2] += 1
+            case _:
+                print(f"{iris.type} does not match anything")
+    tmp.setType(types.index(max(types)))
+    del types
 
-tmp.setType(types.index(max(types)))
-
-print(f"After:\n{tmp}")
+    print(tmp)
 
 
