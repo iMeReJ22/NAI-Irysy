@@ -51,22 +51,7 @@ def findVectorDistance(iris1, iris2):
         pow(iris1.a - iris2.a, 2) + pow(iris1.b - iris2.b, 2) + pow(iris1.c - iris2.c, 2) + pow(iris1.d - iris2.d, 2))
 
 
-# otwieranie plików
-trainFile = open(trainSet, "r")
-testFile = open(testSet, "r")
-
-# dodawanie wszystkich irysów testowych jako obiekty
-irisList = list()
-for line in trainFile:
-    irisList.append(Iris(line))
-
-# dodawanie wszystkich irysów do sprawdzenia jako obiegkty
-toTestIrisList = list()
-for line in testFile:
-    toTestIrisList.append(Iris(line))
-
-print("After assigning: ")
-for tmp in toTestIrisList:
+def classificateIris(tmp, irisList):
     # liczenie odległości do innych irysow(train) dla tego irysa(test)
     for trainIris in irisList:
         # trainIris.reset()
@@ -92,3 +77,46 @@ for tmp in toTestIrisList:
     print(tmp)
 
 
+# otwieranie plików
+trainFile = open(trainSet, "r")
+testFile = open(testSet, "r")
+
+# dodawanie wszystkich irysów testowych jako obiekty
+irisList = list()
+for line in trainFile:
+    irisList.append(Iris(line))
+
+# dodawanie wszystkich irysów do sprawdzenia jako obiegkty
+toTestIrisList = list()
+for line in testFile:
+    toTestIrisList.append(Iris(line))
+
+print("After assigning: ")
+for tmp in toTestIrisList:
+    classificateIris(tmp, irisList)
+
+dalej = True
+while dalej:
+    try:
+        uInput = input("Czy chcesz sprawdzić własny irys? (t/n)\n")
+        if uInput != "n" and uInput != "t":
+            raise Exception("Invalid input.")
+        if uInput == "n":
+            dalej = False
+        else:
+            uInput = input(f"Czy chcesz zmienić k? (teraz: {k}) (t/n)")
+            if uInput != "n" and uInput != "t":
+                raise Exception("Invalid input.")
+            if(uInput == "t"):
+                k = int(input("Podaj nowe k: "))
+            a = float(input("Podaj dane dla nowego wektora:\nA: "))
+            b = float(input("B: "))
+            c = float(input("C: "))
+            d = float(input("D: "))
+            line = a.__str__() + "," + b.__str__() + "," + c.__str__() + "," + d.__str__()
+            tmpIris = Iris(line)
+            classificateIris(tmpIris, irisList)
+    except Exception:
+        print("Invalid input try again.")
+
+print("Thank for using this exceptional, top of the line, the best in the world AI ;)")
