@@ -1,7 +1,7 @@
 import math
 import sys
 
-k = 20
+k = 5
 trainSet = "train"
 testSet = "test"
 
@@ -57,6 +57,7 @@ def classificateIris(tmp, irisList):
         # trainIris.reset()
         trainIris.lastDistance = findVectorDistance(trainIris, tmp)
 
+    # wyciąganie top k najbliższych irysów
     sortedIrisList = sorted(irisList, key=lambda x: x.lastDistance, reverse=False)[:k]
     # zliczanie typów (setosa, versicolor, virginica)
     types = (0, 0, 0)
