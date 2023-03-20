@@ -1,9 +1,10 @@
 import math
 import sys
 
-k = 5
-trainSet = "train"
-testSet = "test"
+k = 20
+trainSet = "train.txt"
+testSet = "test.txt"
+test2Set = "test2.txt"
 
 
 # if len(sys.argv) < 3:
@@ -81,6 +82,7 @@ def classificateIris(tmp, irisList):
 # otwieranie plików
 trainFile = open(trainSet, "r")
 testFile = open(testSet, "r")
+test2File = open(test2Set, "r")
 
 # dodawanie wszystkich irysów testowych jako obiekty
 irisList = list()
@@ -92,9 +94,26 @@ toTestIrisList = list()
 for line in testFile:
     toTestIrisList.append(Iris(line))
 
+test2List = list()
+for line in test2File:
+    test2List.append(Iris(line))
+
 print("After assigning: ")
 for tmp in toTestIrisList:
     classificateIris(tmp, irisList)
+
+i = 0
+good = 0
+for iris in test2List:
+    if iris.type == toTestIrisList[i].type:
+        good += 1
+    i += 1
+
+accuracy = good / i * 100
+
+print(f"Celność dla k: {k} to {accuracy}%")
+
+
 
 dalej = True
 while dalej:
