@@ -1,19 +1,19 @@
 import math
 import sys
 
-k = 20
-trainSet = "train.txt"
-testSet = "test.txt"
+# k = 20
+# trainSet = "train.txt"
+# testSet = "test.txt"
 test2Set = "test2.txt"
 
 
-# if len(sys.argv) < 3:
-#     print("Not enough arguments.")
-#     exit(-1)
-#
-# k = int(sys.argv[0])
-# trainSet = sys.argv[1]
-# testSet = sys.argv[2]
+if len(sys.argv) < 4:
+    print("Not enough arguments.")
+    exit(-1)
+
+k = int(sys.argv[1])
+trainSet = sys.argv[2]
+testSet = sys.argv[3]
 
 # klasa irys
 class Iris:
